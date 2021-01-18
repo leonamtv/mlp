@@ -53,14 +53,14 @@ class MLP :
         erro_classif = np.sum ( erros_classif )
 
         DO = O * ( np.ones ( len ( O )) - O ) * ( output_y - O )
+        DH = np.zeros(self.qtd_h)
 
-        DH = np.dot( H * ( np.ones ( len ( H )) - H ), np.dot ( DO, np.transpose ( self.wo )))
+        for h in range ( self.qtd_h ) :
+            DH[h] = H[h] * ( 1 - H[h] ) * sum ([ DO[i] * self.wo[h][i] for i in range ( len ( DO ))])
 
-        sh = self.ni * np.dot ( DH, np.array(input_x))   
+        # DH = np.dot( H * ( np.ones ( len ( H )) - H ), np.dot ( DO, np.transpose ( self.wo )))
 
-        print(sh.shape)
-
-        # self.wh = self.wh 
-        # self.wo = self.wo + self.ni * np.dot ( DO, H )   
+        self.wh = self.wh + self.ni * np.dot ( DH, np.array( input_x [:-1]))   
+        self.wo = self.wo + self.ni * np.dot ( DO, H [ :-1 ])   
 
         return np.sum ( np.abs ( erro )), 0 if erro_classif == 0 else 1
