@@ -12,8 +12,8 @@ class MLP :
         self.wh = np.random.random (( self.qtd_in + 1, self.qtd_h ))
         self.wo = np.random.random (( self.qtd_h + 1, self.qtd_out ))
 
-        print(self.wh.shape)
-        print(self.wo.shape)
+        # print(self.wh.shape)
+        # print(self.wo.shape)
 
     def feed ( self, x ) :
 
@@ -53,14 +53,11 @@ class MLP :
         erro_classif = np.sum ( erros_classif )
 
         DO = O * ( np.ones ( len ( O )) - O ) * ( output_y - O )
-        DH = np.zeros(self.qtd_h)
 
-        for h in range ( self.qtd_h ) :
-            DH[h] = H[h] * ( 1 - H[h] ) * sum ([ DO[i] * self.wo[h][i] for i in range ( len ( DO ))])
+        DH = H[:-1] * ( 1 - H[:-1] ) * np.dot ( DO, np.transpose ( self.wo[:-1] ))
 
-        # DH = np.dot( H * ( np.ones ( len ( H )) - H ), np.dot ( DO, np.transpose ( self.wo )))
+        self.wh = self.wh + self.ni * DH * input_x [:-1]
 
-        self.wh = self.wh + self.ni * np.dot ( DH, np.array( input_x [:-1]))   
-        self.wo = self.wo + self.ni * np.dot ( DO, H [ :-1 ])   
+        self.wo = self.wo + self.ni * DO * H 
 
         return np.sum ( np.abs ( erro )), 0 if erro_classif == 0 else 1
