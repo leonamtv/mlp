@@ -3,19 +3,12 @@ from random import shuffle
 
 EPOCHS = 200000
 
-mlp = MLP(2, 2, 1, 0.01)
-
-# dataset = [
-#     ([ 0, 0 ], [ 0, 0 ]),
-#     ([ 0, 1 ], [ 0, 0 ]),
-#     ([ 1, 0 ], [ 0, 0 ]),
-#     ([ 1, 1 ], [ 0, 0 ])
-# ]
+mlp = MLP(2, 2, 1, 0.06)
 
 dataset = [
     ([ 0, 0 ], [ 0 ]),
-    ([ 0, 1 ], [ 0 ]),
-    ([ 1, 0 ], [ 0 ]),
+    ([ 0, 1 ], [ 1 ]),
+    ([ 1, 0 ], [ 1 ]),
     ([ 1, 1 ], [ 0 ])
 ]
 
@@ -28,4 +21,4 @@ for i in range ( EPOCHS ) :
         erro_aprox, erro_class = mlp.treinar ( sample[0], sample[1] )
         erroAproxEpoca += erro_aprox
         erroClassEpoca += erro_class
-    print(f"Época {i + 1} | Erro aprox: { erroAproxEpoca } | Erro class: { erroClassEpoca } ")
+    print(f"Época {i + 1} \t| Erro aprox: { erroAproxEpoca } \t\t| Erro class: { erroClassEpoca } ")

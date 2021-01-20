@@ -12,9 +12,6 @@ class MLP :
         self.wh = np.random.random (( self.qtd_in + 1, self.qtd_h ))
         self.wo = np.random.random (( self.qtd_h + 1, self.qtd_out ))
 
-        # print(self.wh.shape)
-        # print(self.wo.shape)
-
     def feed ( self, x ) :
 
         input_x = x.copy()
@@ -56,8 +53,13 @@ class MLP :
 
         DH = H[:-1] * ( 1 - H[:-1] ) * np.dot ( DO, np.transpose ( self.wo[:-1] ))
 
-        self.wh = self.wh + self.ni * DH * input_x [:-1]
 
-        self.wo = self.wo + self.ni * DO * H 
+        sh = self.ni * np.dot ( np.transpose ( DH ), input_x[:-1] )
+
+        self.wh = self.wh + sh
+
+        so = self.ni * np.dot ( np.transpose ( DO ), H[:-1] )
+
+        self.wo = self.wo + so
 
         return np.sum ( np.abs ( erro )), 0 if erro_classif == 0 else 1
