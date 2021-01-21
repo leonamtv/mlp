@@ -3,7 +3,7 @@ from random import shuffle
 
 EPOCHS = 2000
 
-mlp = MLP(2, 3, 1, 0.05)
+mlp = MLP(2, 3, 1, 0.3)
 
 dataset = [
     ([ 0, 0 ], [ 0 ]),
