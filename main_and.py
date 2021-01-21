@@ -1,15 +1,15 @@
 from core.MLP import MLP
 from random import shuffle
 
-EPOCHS = 2000
+EPOCHS = 1
 
-mlp = MLP(2, 2, 1, 0.05)
+mlp = MLP(2, 3, 1, 0.05)
 
 dataset = [
     ([ 0, 0 ], [ 0 ]),
     ([ 0, 1 ], [ 0 ]),
     ([ 1, 0 ], [ 0 ]),
-    ([ 1, 1 ], [ 0 ])
+    ([ 1, 1 ], [ 1 ])
 ]
 
 for i in range ( EPOCHS ) :

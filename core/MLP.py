@@ -28,19 +28,24 @@ class MLP :
 
     def treinar ( self, x, y, threshold=0.5 ) :
         
-        input_x = x.copy()
-        input_x.append(1)
+        input_x = np.append( np.array(x.copy()), [1])
+        input_x.shape = ( 1, len(input_x) )
 
-        output_y = np.array ( y )
+        output_y = np.transpose ( np.array ( y ))
+        output_y.shape = ( self.qtd_out, 1 )
 
         def sigmoid ( x ) :
             return 1. / ( 1 + np.exp ( -x ))
 
-        H = sigmoid ( np.dot ( np.array ( input_x ), self.wh ))
+        H = sigmoid ( np.dot ( input_x, self.wh ))
 
         H = np.append ( H, [1] )
 
-        O = sigmoid ( np.dot ( H, self.wo ))
+        H.shape = ( self.qtd_h + 1, 1 )
+        
+        O = sigmoid ( np.dot ( np.transpose( H ), self.wo ))
+
+        O.shape = ( self.qtd_out, 1 )
 
         erro = np.subtract( output_y, O )
 
@@ -49,17 +54,16 @@ class MLP :
         erros_classif = np.subtract( output_y, np.array ( classif ))
         erro_classif = np.sum ( erros_classif )
 
-        DO = O * ( np.ones ( len ( O )) - O ) * ( output_y - O )
+        DO = O * ( 1 - O ) * erro
 
-        DH = H[:-1] * ( 1 - H[:-1] ) * np.dot ( DO, np.transpose ( self.wo[:-1] ))
+        DH = H * ( 1 - H ) * np.dot ( self.wo, DO )
 
+        for i in range ( self.qtd_in + 1 ) :
+            for h in range ( self.qtd_h ) :
+                self.wh[i][h] += self.ni * DH[h] * np.transpose(input_x)[i]
 
-        sh = self.ni * np.dot ( np.transpose ( DH ), input_x[:-1] )
-
-        self.wh = self.wh + sh
-
-        so = self.ni * np.dot ( np.transpose ( DO ), H[:-1] )
-
-        self.wo = self.wo + so
+        for i in range ( self.qtd_h + 1 ) :
+            for h in range (  self.qtd_out ) :
+                self.wo[i][h] += self.ni * DO[h] * H[i]     
 
         return np.sum ( np.abs ( erro )), 0 if erro_classif == 0 else 1
