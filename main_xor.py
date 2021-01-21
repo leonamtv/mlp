@@ -1,7 +1,7 @@
 from core.MLP import MLP
 from random import shuffle
 
-EPOCHS = 200000
+EPOCHS = 1
 
 mlp = MLP(2, 4, 1, 0.3)
 

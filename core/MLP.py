@@ -58,12 +58,20 @@ class MLP :
 
         DH = H * ( 1 - H ) * np.dot ( self.wo, DO )
 
+        # print('-----')
+
         for i in range ( self.qtd_in + 1 ) :
             for h in range ( self.qtd_h ) :
+                # print ( str(h) + '*' + str(i), end=' ' )
                 self.wh[i][h] += self.ni * DH[h] * np.transpose(input_x)[i]
+            # print()
+
+        # print('-----')
 
         for i in range ( self.qtd_h + 1 ) :
             for h in range (  self.qtd_out ) :
+                # print ( str(h) + '*' + str(i), end=' ' )
                 self.wo[i][h] += self.ni * DO[h] * H[i]     
+            # print()
 
         return np.sum ( np.abs ( erro )), 0 if erro_classif == 0 else 1
