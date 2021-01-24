@@ -13,6 +13,9 @@ class MLP :
         self.wo = np.random.random (( self.qtd_h + 1, self.qtd_out ))
 
     def feed ( self, x ) :
+        """
+        Calcula o feed forward da rede.
+        """
 
         input_x = x.copy()
         input_x.append(1)
@@ -28,7 +31,13 @@ class MLP :
 
     def treinar ( self, x, y, threshold=0.5 ) :
         """
+        Recebe uma entrada x e uma saída y e faz o treinamento.
 
+        O parâmetro treshold define o limite de comparação para
+        definirmos o erro de classificação.
+
+        O método retorna o erro de amostragem e o erro de classi-
+        ficação da amostra.
         """
        
         input_x = np.append( np.array(x.copy()), [1])
